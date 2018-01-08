@@ -40,7 +40,7 @@ public class CropPlugin extends CordovaPlugin {
 
           cordova.setActivityResultCallback(this);
 
-          Crop crop = UCrop.of(this.inputUri, this.outputUri);
+          UCrop crop = UCrop.of(this.inputUri, this.outputUri);
           if(targetHeight != -1 && targetWidth != -1) {
               crop.withMaxResultSize(targetWidth, targetHeight);
               if(targetWidth == targetHeight) {
