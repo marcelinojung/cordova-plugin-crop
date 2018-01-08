@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 
-import com.soundcloud.android.crop.Crop;
+import com.yalantis.ucrop.UCrop;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -39,9 +39,10 @@ public class CropPlugin extends CordovaPlugin {
           this.callbackContext = callbackContext;
 
           cordova.setActivityResultCallback(this);
-          Crop crop = Crop.of(this.inputUri, this.outputUri);
+
+          Crop crop = UCrop.of(this.inputUri, this.outputUri);
           if(targetHeight != -1 && targetWidth != -1) {
-              crop.withMaxSize(targetWidth, targetHeight);
+              crop.withMaxResultSize(targetWidth, targetHeight);
               if(targetWidth == targetHeight) {
                   crop.asSquare();
               }
