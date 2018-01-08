@@ -7,6 +7,7 @@
 @property (assign) NSUInteger quality;
 @property (assign) NSUInteger targetWidth;
 @property (assign) NSUInteger targetHeight;
+@property (assign) NSNumber allowRotate;
 @end
 
 @implementation CTCrop
@@ -19,6 +20,7 @@
     self.quality = options[@"quality"] ? [options[@"quality"] intValue] : 100;
     self.targetWidth = options[@"targetWidth"] ? [options[@"targetWidth"] intValue] : -1;
     self.targetHeight = options[@"targetHeight"] ? [options[@"targetHeight"] intValue] : -1;
+    self.allowRotate = options[@"allowRotate"] ? [options[@"allowRotate"] boolValue] : NO;
     NSString *filePrefix = @"file://";
     
     if ([imagePath hasPrefix:filePrefix]) {
@@ -44,7 +46,7 @@
     CGFloat height = self.targetHeight > -1 ? (CGFloat)self.targetHeight : image.size.height;
     CGFloat length = MIN(width, height);
     cropController.toolbarHidden = YES;
-    cropController.rotationEnabled = NO;
+    cropController.rotationEnabled = self.targetHeight;
     cropController.keepingCropAspectRatio = YES;
     
     cropController.imageCropRect = CGRectMake((width - length) / 2,

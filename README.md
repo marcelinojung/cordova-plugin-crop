@@ -13,6 +13,13 @@ $ ionic cordova plugin add https://github.com/jaroslavrehorka/cordova-plugin-cro
 ## Usage
 
 ```js
+let options = {
+          quality: 75,
+          allowRotate: true,
+          targetWidth:600,
+          targetHeight:600
+};
+
 plugins.crop(function success () {
 
 }, function fail () {
@@ -36,6 +43,9 @@ plugins.crop.promise('/path/to/image', options)
 ## API
 
  * quality: Number
+ * allowRotate: bool (default false)
+ * targetWidth: Number
+ * targetHeight: Number
 
 The resulting JPEG quality. default: 100
 

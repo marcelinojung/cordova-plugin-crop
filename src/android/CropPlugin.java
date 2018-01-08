@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 
 import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -29,6 +30,7 @@ public class CropPlugin extends CordovaPlugin {
           JSONObject options = args.getJSONObject(1);
           int targetWidth = options.getInt("targetWidth");
           int targetHeight = options.getInt("targetHeight");
+          boolean allowRotate = options.has("allowRotate") ? options.getBoolean("allowRotate") : false;
 
           this.inputUri = Uri.parse(imagePath);
           this.outputUri = Uri.fromFile(new File(getTempDirectoryPath() + "/" + System.currentTimeMillis()+ "-cropped.jpg"));
@@ -40,7 +42,17 @@ public class CropPlugin extends CordovaPlugin {
 
           cordova.setActivityResultCallback(this);
 
-          UCrop crop = UCrop.of(this.inputUri, this.outputUri);
+          UCrop.Options options = new UCrop.Options();
+
+          UCropActivity.GestureTypes rotationOption = UCropActivity.NONE;
+          if(allowRotate) {
+              rotationOption = UCropActivity.ROTATE;
+          }
+          options.setAllowedGestures(UCropActivity.SCALE, rotationOption, UCropActivity.NONE);
+
+          UCrop crop = UCrop.of(this.inputUri, this.outputUri)
+                            .withOptions(options);
+
           if(targetHeight != -1 && targetWidth != -1) {
               crop.withMaxResultSize(targetWidth, targetHeight);
               if(targetWidth == targetHeight) {
