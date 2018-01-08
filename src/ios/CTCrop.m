@@ -46,7 +46,7 @@
     CGFloat height = self.targetHeight > -1 ? (CGFloat)self.targetHeight : image.size.height;
     CGFloat length = MIN(width, height);
     cropController.toolbarHidden = YES;
-    cropController.allowRotate = self.targetHeight;
+    cropController.rotationEnabled = self.allowRotate;
     cropController.keepingCropAspectRatio = YES;
     
     cropController.imageCropRect = CGRectMake((width - length) / 2,
