@@ -44,10 +44,10 @@ public class CropPlugin extends CordovaPlugin {
           if(targetHeight != -1 && targetWidth != -1) {
               crop.withMaxResultSize(targetWidth, targetHeight);
               if(targetWidth == targetHeight) {
-                  crop.asSquare();
+                  crop.withAspectRatio(1, 1);
               }
           } else {
-              crop.asSquare();
+              crop.withAspectRatio(1, 1);
           }
           crop.start(cordova.getActivity());
           return true;
@@ -57,12 +57,12 @@ public class CropPlugin extends CordovaPlugin {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == Crop.REQUEST_CROP) {
+        if (requestCode == UCrop.REQUEST_CROP) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = Crop.getOutput(intent);
+                Uri imageUri = UCrop.getOutput(intent);
                 this.callbackContext.success("file://" + imageUri.getPath() + "?" + System.currentTimeMillis());
                 this.callbackContext = null;
-            } else if (resultCode == Crop.RESULT_ERROR) {
+            } else if (resultCode == UCrop.RESULT_ERROR) {
                 try {
                     JSONObject err = new JSONObject();
                     err.put("message", "Error on cropping");
