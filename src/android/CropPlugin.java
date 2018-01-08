@@ -25,46 +25,46 @@ public class CropPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
-      if (action.equals("cropImage")) {
-          String imagePath = args.getString(0);
-          JSONObject options = args.getJSONObject(1);
-          int targetWidth = options.getInt("targetWidth");
-          int targetHeight = options.getInt("targetHeight");
-          boolean allowRotate = options.has("allowRotate") ? options.getBoolean("allowRotate") : false;
+        if (action.equals("cropImage")) {
+            String imagePath = args.getString(0);
+            JSONObject options = args.getJSONObject(1);
+            int targetWidth = options.getInt("targetWidth");
+            int targetHeight = options.getInt("targetHeight");
+            boolean allowRotate = options.has("allowRotate") ? options.getBoolean("allowRotate") : false;
 
-          this.inputUri = Uri.parse(imagePath);
-          this.outputUri = Uri.fromFile(new File(getTempDirectoryPath() + "/" + System.currentTimeMillis()+ "-cropped.jpg"));
+            this.inputUri = Uri.parse(imagePath);
+            this.outputUri = Uri.fromFile(new File(getTempDirectoryPath() + "/" + System.currentTimeMillis()+ "-cropped.jpg"));
 
-          PluginResult pr = new PluginResult(PluginResult.Status.NO_RESULT);
-          pr.setKeepCallback(true);
-          callbackContext.sendPluginResult(pr);
-          this.callbackContext = callbackContext;
+            PluginResult pr = new PluginResult(PluginResult.Status.NO_RESULT);
+            pr.setKeepCallback(true);
+            callbackContext.sendPluginResult(pr);
+            this.callbackContext = callbackContext;
 
-          cordova.setActivityResultCallback(this);
+            cordova.setActivityResultCallback(this);
 
-          UCrop.Options options = new UCrop.Options();
+            UCrop.Options ucropOptions = new UCrop.Options();
 
-          UCropActivity.GestureTypes rotationOption = UCropActivity.NONE;
-          if(allowRotate) {
-              rotationOption = UCropActivity.ROTATE;
-          }
-          options.setAllowedGestures(UCropActivity.SCALE, rotationOption, UCropActivity.NONE);
+            int rotationOption = UCropActivity.SCALE;
+            if(allowRotate) {
+                rotationOption = UCropActivity.ALL;
+            }
+            ucropOptions.setAllowedGestures(rotationOption, UCropActivity.NONE, UCropActivity.NONE);
 
-          UCrop crop = UCrop.of(this.inputUri, this.outputUri)
-                            .withOptions(options);
+            UCrop crop = UCrop.of(this.inputUri, this.outputUri)
+                    .withOptions(ucropOptions);
 
-          if(targetHeight != -1 && targetWidth != -1) {
-              crop.withMaxResultSize(targetWidth, targetHeight);
-              if(targetWidth == targetHeight) {
-                  crop.withAspectRatio(1, 1);
-              }
-          } else {
-              crop.withAspectRatio(1, 1);
-          }
-          crop.start(cordova.getActivity());
-          return true;
-      }
-      return false;
+            if(targetHeight != -1 && targetWidth != -1) {
+                crop.withMaxResultSize(targetWidth, targetHeight);
+                if(targetWidth == targetHeight) {
+                    crop.withAspectRatio(1, 1);
+                }
+            } else {
+                crop.withAspectRatio(1, 1);
+            }
+            crop.start(cordova.getActivity());
+            return true;
+        }
+        return false;
     }
 
     @Override
