@@ -5,8 +5,8 @@ var crop = module.exports = function cropImage (success, fail, image, options) {
   options.targetWidth = options.targetWidth || -1
   options.targetHeight = options.targetHeight || -1
   options.allowRotate = options.allowRotate || false
-  options.keepCropAspectRatio = options.keepCropAspectRatio || true
-  options.showCropGrid = options.showCropGrid || true
+  options.keepCropAspectRatio = !!options.keepCropAspectRatio
+  options.showCropGrid = !!options.showCropGrid
   options.toolbarTitle = options.toolbarTitle || ""
   return cordova.exec(success, fail, 'CropPlugin', 'cropImage', [image, options])
 }
