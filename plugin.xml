@@ -55,7 +55,7 @@
       </feature>
     </config-file>
 
-    <framework src="com.yalantis:ucrop:2.2.0@aar" />
+    <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>

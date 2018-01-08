@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ cordova plugin add --save cordova-plugin-crop
+$ ionic cordova plugin add https://github.com/jaroslavrehorka/cordova-plugin-crop
 ```
 
 
