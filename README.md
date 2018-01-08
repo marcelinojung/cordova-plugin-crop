@@ -16,6 +16,9 @@ $ ionic cordova plugin add https://github.com/jaroslavrehorka/cordova-plugin-cro
 let options = {
           quality: 75,
           allowRotate: true,
+          keepCropAspectRatio: true,
+          showCropGrid: true,
+          toolbarTitle: "Custom Title"
           targetWidth:600,
           targetHeight:600
 };
@@ -44,6 +47,9 @@ plugins.crop.promise('/path/to/image', options)
 
  * quality: Number
  * allowRotate: bool (default false)
+ * keepCropAspectRatio: bool (default true)
+ * showCropGrid: bool (default true), android only
+ * toolbarTitle: String, android only
  * targetWidth: Number
  * targetHeight: Number
 

@@ -31,6 +31,9 @@ public class CropPlugin extends CordovaPlugin {
             int targetWidth = options.getInt("targetWidth");
             int targetHeight = options.getInt("targetHeight");
             boolean allowRotate = options.has("allowRotate") ? options.getBoolean("allowRotate") : false;
+            boolean keepCropAspectRatio = options.has("keepCropAspectRatio") ? options.getBoolean("keepCropAspectRatio") : true;
+            boolean showCropGrid = options.has("showCropGrid") ? options.getBoolean("showCropGrid") : true;
+            String toolbarTitle = options.has("toolbarTitle") ? options.getString("toolbarTitle") : "";
 
             this.inputUri = Uri.parse(imagePath);
             this.outputUri = Uri.fromFile(new File(getTempDirectoryPath() + "/" + System.currentTimeMillis()+ "-cropped.jpg"));
@@ -43,12 +46,9 @@ public class CropPlugin extends CordovaPlugin {
             cordova.setActivityResultCallback(this);
 
             UCrop.Options ucropOptions = new UCrop.Options();
-
-            int rotationOption = UCropActivity.SCALE;
-            if(allowRotate) {
-                rotationOption = UCropActivity.ALL;
-            }
-            ucropOptions.setAllowedGestures(rotationOption, UCropActivity.NONE, UCropActivity.NONE);
+            ucropOptions.setFreeStyleCropEnabled(!keepCropAspectRatio);
+            ucropOptions.setShowCropGrid(showCropGrid);
+            ucropOptions.setToolbarTitle(toolbarTitle);
 
             UCrop crop = UCrop.of(this.inputUri, this.outputUri)
                     .withOptions(ucropOptions);
@@ -58,7 +58,7 @@ public class CropPlugin extends CordovaPlugin {
                 if(targetWidth == targetHeight) {
                     crop.withAspectRatio(1, 1);
                 }
-            } else {
+            } else if(keepCropAspectRatio) {
                 crop.withAspectRatio(1, 1);
             }
             crop.start(cordova.getActivity());
