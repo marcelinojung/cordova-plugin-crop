@@ -1,6 +1,6 @@
 # cordova-plugin-crop
 
-> Crop an image in a Cordova app
+> Crop an image in a Cordova app using UCrop plugin
 
 
 ## Install
@@ -41,9 +41,9 @@ The resulting JPEG quality. default: 100
 
 ## Ionic / Typescript Example Angular 2 Service
 
-<img src="screenshot-example.png" width="250" height="500">
+<img src="preview.gif" width="800" height="600">
 
-This is an example service that uses ionic-native's built in camera and the cordova-plugin-crop to create a cropped version of the image and return the file path. 
+This is an example service that uses ionic-native's built in camera and the cordova-plugin-crop to create a cropped version (with UCrop plugin) of the image and return the file path.
 
 ```js
 import { Injectable } from '@angular/core';
@@ -94,7 +94,7 @@ export class CameraService {
 ### Libraries used
 
  * iOS: [PEPhotoCropEditor](https://github.com/kishikawakatsumi/PEPhotoCropEditor)
- * Android: [android-crop](https://github.com/jdamcd/android-crop)
+ * Android: [uCrop](https://github.com/Yalantis/uCrop)
 
 ## License
 
