@@ -8,6 +8,7 @@ import android.os.Environment;
 
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
+import com.yalantis.ucrop.model.AspectRatio;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -49,7 +50,13 @@ public class CropPlugin extends CordovaPlugin {
             ucropOptions.setFreeStyleCropEnabled(!keepCropAspectRatio);
             ucropOptions.setShowCropGrid(showCropGrid);
             ucropOptions.setToolbarTitle(toolbarTitle);
-
+            if(targetHeight != -1 && targetHeight > 100 
+				&& targetWidth != -1 && targetWidth > 100) 
+			{
+				ucropOptions.setAspectRatioOptions(0, 
+					new AspectRatio(null, targetWidth/100, targetHeight/100));
+			}
+            
             UCrop crop = UCrop.of(this.inputUri, this.outputUri)
                     .withOptions(ucropOptions);
 
