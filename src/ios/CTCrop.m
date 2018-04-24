@@ -47,16 +47,27 @@
     CGFloat width = self.targetWidth > -1 ? (CGFloat)self.targetWidth : image.size.width;
     CGFloat height = self.targetHeight > -1 ? (CGFloat)self.targetHeight : image.size.height;
     CGFloat length = MIN(width, height);
-    cropController.toolbarHidden = YES;
-    cropController.rotationEnabled = self.allowRotate;
-    cropController.keepingCropAspectRatio = self.keepCropAspectRatio;
-
-    if (self.keepCropAspectRatio) {
-        cropController.imageCropRect = CGRectMake((width - length) / 2,
-                                                  (height - length) / 2,
-                                                  length,
-                                                  length);
+    CGFloat croperWidth;
+    CGFloat croperHeight;
+    
+    if (self.targetHeight == self.targetWidth || self.targetWidth == -1 || self.targetHeight == -1){
+        croperWidth = length;
+        croperHeight = length;
+    } else if(self.targetWidth > self.targetHeight) {
+        croperWidth = width;
+        croperHeight = width * self.targetHeight / self.targetWidth;
+    } else {
+        croperWidth = height * self.targetWidth / self.targetHeight;
+        croperHeight = height;
     }
+    
+    cropController.keepingCropAspectRatio = YES;
+    cropController.toolbarHidden = YES;
+    cropController.rotationEnabled = NO;
+    cropController.imageCropRect = CGRectMake((width - croperWidth) / 2,
+                                              (height - croperHeight) / 2,
+                                              croperWidth,
+                                              croperHeight);
     
     self.callbackId = command.callbackId;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cropController];
