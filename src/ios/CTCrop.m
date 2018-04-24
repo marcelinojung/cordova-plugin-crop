@@ -18,7 +18,7 @@
     NSString *imagePath = [command.arguments objectAtIndex:0];
     NSDictionary *options = [command.arguments objectAtIndex:1];
     
-    self.quality = options[@"quality"] ? [options[@"quality"] intValue] : 100;
+    self.quality = 50;
     self.targetWidth = options[@"targetWidth"] ? [options[@"targetWidth"] intValue] : -1;
     self.targetHeight = options[@"targetHeight"] ? [options[@"targetHeight"] intValue] : -1;
     self.allowRotate = options[@"allowRotate"] ? [options[@"allowRotate"] boolValue] : NO;
@@ -63,7 +63,7 @@
     
     cropController.keepingCropAspectRatio = YES;
     cropController.toolbarHidden = YES;
-    cropController.rotationEnabled = NO;
+    cropController.rotationEnabled = self.allowRotate;
     cropController.imageCropRect = CGRectMake((width - croperWidth) / 2,
                                               (height - croperHeight) / 2,
                                               croperWidth,
@@ -86,7 +86,7 @@
     if (!self.callbackId) return;
     
     UIImage *resizedImage = [self resizeImage:croppedImage];
-    NSData *data = UIImageJPEGRepresentation(resizedImage, (CGFloat) self.quality);
+    NSData *data = UIImageJPEGRepresentation(resizedImage, ((CGFloat)self.quality)/100);
     NSString* filePath = [self tempFilePath:@"jpg"];
     CDVPluginResult *result;
     NSError *err;
