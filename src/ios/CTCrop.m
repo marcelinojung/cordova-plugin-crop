@@ -61,7 +61,7 @@
         croperHeight = height;
     }
     
-    cropController.keepingCropAspectRatio = YES;
+    cropController.keepingCropAspectRatio = self.keepCropAspectRatio;
     cropController.toolbarHidden = YES;
     cropController.rotationEnabled = self.allowRotate;
     cropController.imageCropRect = CGRectMake((width - croperWidth) / 2,
