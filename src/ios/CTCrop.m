@@ -50,7 +50,10 @@
     CGFloat croperWidth;
     CGFloat croperHeight;
     
-    if (self.targetHeight == self.targetWidth || self.targetWidth == -1 || self.targetHeight == -1){
+    if (self.targetWidth == -1 || self.targetHeight == -1){
+        croperWidth = width;
+        croperHeight = height;
+    } else if (self.targetHeight == self.targetWidth){
         croperWidth = length;
         croperHeight = length;
     } else if(self.targetWidth > self.targetHeight) {
