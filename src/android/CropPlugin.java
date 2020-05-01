@@ -38,6 +38,12 @@ public class CropPlugin extends CordovaPlugin {
             boolean showCropGrid = options.has("showCropGrid") ? options.getBoolean("showCropGrid") : true;
             String toolbarTitle = options.has("toolbarTitle") ? options.getString("toolbarTitle") : "";
 
+            String toolbarColor = options.has("toolbarColor");
+            String statusBarColor = options.has("statusBarColor");
+            String toolbarWidgetColor = options.has("toolbarWidgetColor");
+            String rootViewBackgroundColor = options.has("rootViewBackgroundColor");
+            String activeControlsWidgetColor = options.has("activeControlsWidgetColor");
+
             this.inputUri = Uri.parse(imagePath);
             this.outputUri = Uri.fromFile(new File(getTempDirectoryPath() + "/" + System.currentTimeMillis()+ "-cropped.jpg"));
 
@@ -50,13 +56,12 @@ public class CropPlugin extends CordovaPlugin {
 
             UCrop.Options ucropOptions = new UCrop.Options();
             
-            //test cambio colori
-            ucropOptions.setToolbarColor(Color.parseColor("#0088d6"));
-            ucropOptions.setStatusBarColor(Color.parseColor("#0088d6"));
             
-            // ucropOptions.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
-            // ucropOptions.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.your_color_res));
-            // ucropOptions.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
+            ucropOptions.setToolbarColor(Color.parseColor(toolbarColor));
+            ucropOptions.setStatusBarColor(Color.parseColor(statusBarColor));
+            ucropOptions.setToolbarWidgetColor(Color.parseColor(toolbarWidgetColor));
+            ucropOptions.setRootViewBackgroundColor(Color.parseColor(rootViewBackgroundColor));
+            ucropOptions.setActiveControlsWidgetColor(Color.parseColor(activeControlsWidgetColor));
 
             ucropOptions.setFreeStyleCropEnabled(!keepCropAspectRatio);
             ucropOptions.setShowCropGrid(showCropGrid);
