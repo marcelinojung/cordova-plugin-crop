@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 
+import android.graphics.Color;
+
 public class CropPlugin extends CordovaPlugin {
     private CallbackContext callbackContext;
     private Uri inputUri;
@@ -47,9 +49,18 @@ public class CropPlugin extends CordovaPlugin {
             cordova.setActivityResultCallback(this);
 
             UCrop.Options ucropOptions = new UCrop.Options();
+            
+            //test cambio colori
+            ucropOptions.setToolbarColor(Color.parseColor("#0088d6"));
+            ucropOptions.setStatusBarColor(Color.parseColor("#0088d6"));
+            
+            // ucropOptions.setToolbarWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
+            // ucropOptions.setRootViewBackgroundColor(ContextCompat.getColor(this, R.color.your_color_res));
+            // ucropOptions.setActiveControlsWidgetColor(ContextCompat.getColor(this, R.color.your_color_res));
+
             ucropOptions.setFreeStyleCropEnabled(!keepCropAspectRatio);
             ucropOptions.setShowCropGrid(showCropGrid);
-            ucropOptions.setToolbarTitle(toolbarTitle);
+            ucropOptions.setToolbarTitle(toolbarTitle);            
             if(targetHeight != -1 && targetHeight > 100 
 				&& targetWidth != -1 && targetWidth > 100) 
 			{
