@@ -38,11 +38,11 @@ public class CropPlugin extends CordovaPlugin {
             boolean showCropGrid = options.has("showCropGrid") ? options.getBoolean("showCropGrid") : true;
             String toolbarTitle = options.has("toolbarTitle") ? options.getString("toolbarTitle") : "";
 
-            String toolbarColor = options.has("toolbarColor");
-            String statusBarColor = options.has("statusBarColor");
-            String toolbarWidgetColor = options.has("toolbarWidgetColor");
-            String rootViewBackgroundColor = options.has("rootViewBackgroundColor");
-            String activeControlsWidgetColor = options.has("activeControlsWidgetColor");
+            String toolbarColor = options.getString("toolbarColor");
+            String statusBarColor = options.getString("statusBarColor");
+            String toolbarWidgetColor = options.getString("toolbarWidgetColor");
+            String rootViewBackgroundColor = options.getString("rootViewBackgroundColor");
+            String activeControlsWidgetColor = options.getString("activeControlsWidgetColor");
 
             this.inputUri = Uri.parse(imagePath);
             this.outputUri = Uri.fromFile(new File(getTempDirectoryPath() + "/" + System.currentTimeMillis()+ "-cropped.jpg"));
