@@ -13,6 +13,4 @@
 - (UIImage *)rotatedImageWithtransform:(CGAffineTransform)rotation
                          croppedToRect:(CGRect)rect;
 
-- (UIImage *)pe_croppedImageWithRect:(CGRect)rect;
-
 @end
