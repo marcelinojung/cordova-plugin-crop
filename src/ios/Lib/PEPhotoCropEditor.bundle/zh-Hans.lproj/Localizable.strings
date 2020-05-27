@@ -2,14 +2,14 @@
   Localizable.strings
   PEPhotoCropEditor
 
-  Created by kishikawa katsumi on 2013/06/02.
+  Created by kishikawa katsumi on 2013/06/03.
   Copyright (c) 2013 kishikawa katsumi. All rights reserved.
 */
 
-"Constrain" = "Constrain";
-"Restore" = "Restore";
-"Original" = "Original";
-"Square" = "Square";
+"Constrain" = "约束";
+"Restore" = "还原";
+"Original" = "原";
+"Square" = "调整";
 "3 x 2" = "3 x 2";
 "3 x 5" = "3 x 5";
 "4 x 3" = "4 x 3";

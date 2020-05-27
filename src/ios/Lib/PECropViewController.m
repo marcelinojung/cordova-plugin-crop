@@ -9,11 +9,11 @@
 #import "PECropViewController.h"
 #import "PECropView.h"
 
-@interface PECropViewController () <UIActionSheetDelegate>
+#define CROPRGBA(r,g,b,a)      [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:a]
 
+@interface PECropViewController () <UIActionSheetDelegate>
 @property (nonatomic) PECropView *cropView;
 @property (nonatomic) UIActionSheet *actionSheet;
-
 - (void)commonInit;
 
 @end
@@ -40,11 +40,9 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
-    
     if (self) {
         [self commonInit];
     }
-    
     return self;
 }
 
@@ -71,7 +69,6 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
     contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     contentView.backgroundColor = [UIColor blackColor];
     self.view = contentView;
-    
     self.cropView = [[PECropView alloc] initWithFrame:contentView.bounds];
     [contentView addSubview:self.cropView];
 }
@@ -82,35 +79,27 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
     
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancel:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                           target:self
-                                                                                           action:@selector(done:)];
-
-    if (!self.toolbarItems) {
-        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                       target:nil
-                                                                                       action:nil];
-        UIBarButtonItem *constrainButton = [[UIBarButtonItem alloc] initWithTitle:PELocalizedString(@"Constrain", nil)
-                                                                            style:UIBarButtonItemStyleBordered
-                                                                           target:self
-                                                                           action:@selector(constrain:)];
-        self.toolbarItems = @[flexibleSpace, constrainButton, flexibleSpace];
-    }
-    self.navigationController.toolbarHidden = self.toolbarHidden;
-    
+    [self creatToolsBar];
     self.cropView.image = self.image;
-    
     self.cropView.rotationGestureRecognizer.enabled = _rotationEnabled;
 }
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setHidden:YES];
+    [self hidStatusBarByIsHid:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self hidStatusBarByIsHid:NO];
+}
+- (void)hidStatusBarByIsHid:(BOOL)isHid
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:isHid withAnimation:UIStatusBarAnimationNone];
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     if (self.cropAspectRatio != 0) {
         self.cropAspectRatio = self.cropAspectRatio;
     }
@@ -127,6 +116,39 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     return YES;
+}
+
+#pragma mark - CreatToolsBar
+- (void)creatToolsBar
+{
+    if (!self.toolbarItems) {
+        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                       target:nil
+                                                                                       action:nil];
+        UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                       target:nil
+                                                                                       action:nil];
+        UIBarButtonItem *restoreButton = [[UIBarButtonItem alloc] initWithTitle:PELocalizedString(@"Restore", nil)
+                                                                          style:UIBarButtonItemStylePlain//UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(constrain:)];
+        UIBarButtonItem *colseButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"PEPhotoCropEditor.bundle/icon_cut_X"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                        style:UIBarButtonItemStylePlain
+                                                                       target:self action:@selector(cancel:)];
+
+        UIBarButtonItem *rotateButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"PEPhotoCropEditor.bundle/icon_cut_rotate"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self action:@selector(rotateButtonClick:)];
+        
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"PEPhotoCropEditor.bundle/icon_cut_dui"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:self action:@selector(done:)];
+        //Base style for 矩形 52
+        [self.navigationController.toolbar setTintColor:[UIColor colorWithRed:255.0f/255.0f green:77.0f/255.0f blue:91.0f/255.0f alpha:1.0f]];
+        [self.navigationController.toolbar setBarTintColor:[UIColor colorWithRed:50.0f/255.0f green:50.0f/255.0f blue:50.0f/255.0f alpha:1.0f]];
+        self.toolbarItems = @[colseButton,flexibleSpace,rotateButton,flexSpace,restoreButton,flexibleSpace,doneButton];
+    }
+    self.navigationController.toolbarHidden = self.toolbarHidden;
 }
 
 #pragma mark -
@@ -153,11 +175,9 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 {
     _cropRect = cropRect;
     _imageCropRect = CGRectZero;
-    
     CGRect cropViewCropRect = self.cropView.cropRect;
     cropViewCropRect.origin.x += cropRect.origin.x;
     cropViewCropRect.origin.y += cropRect.origin.y;
-    
     CGSize size = CGSizeMake(fminf(CGRectGetMaxX(cropViewCropRect) - CGRectGetMinX(cropViewCropRect), CGRectGetWidth(cropRect)),
                              fminf(CGRectGetMaxY(cropViewCropRect) - CGRectGetMinY(cropViewCropRect), CGRectGetHeight(cropRect)));
     cropViewCropRect.size = size;
@@ -168,7 +188,6 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
 {
     _imageCropRect = imageCropRect;
     _cropRect = CGRectZero;
-    
     self.cropView.imageCropRect = imageCropRect;
 }
 
@@ -239,6 +258,12 @@ static inline NSString *PELocalizedString(NSString *key, NSString *comment)
                         PELocalizedString(@"16 x 9", nil), nil];
     [self.actionSheet showFromToolbar:self.navigationController.toolbar];
 }
+
+- (void)rotateButtonClick:(id)sender
+{
+    self.cropView.transform=CGAffineTransformMakeRotation(M_PI/2);
+}
+
 
 #pragma mark -
 

@@ -1,6 +1,6 @@
 # cordova-plugin-crop
 
-> Crop an image in a Cordova app using UCrop plugin
+> Crop an image in a Cordova app using UCrop plugin (Android) and PEPhotoCropEditor (iOS)
 
 
 ## Install
@@ -109,7 +109,7 @@ export class CameraService {
 
 ### Libraries used
 
- * iOS: [PEPhotoCropEditor](https://github.com/kishikawakatsumi/PEPhotoCropEditor)
+ * iOS: [PEPhotoCropEditor](https://github.com/yucomds/PEPhotoCropEditor)
  * Android: [uCrop](https://github.com/Yalantis/uCrop)
 
 ## License
